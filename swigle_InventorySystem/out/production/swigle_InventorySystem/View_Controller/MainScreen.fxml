@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="444.0" prefWidth="1050.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View_Controller.MainScreenController">
+   <children>
+      <AnchorPane layoutX="14.0" layoutY="74.0" prefHeight="317.0" prefWidth="496.0" style="-fx-border-color: black; -fx-border-radius: 10;">
+         <children>
+            <Label layoutX="14.0" layoutY="14.0" text="Parts">
+               <font>
+                  <Font size="21.0" />
+               </font>
+            </Label>
+            <Button fx:id="searchPartButton" layoutX="252.0" layoutY="19.0" mnemonicParsing="false" onMouseClicked="#searchPartHandler" text="Search" />
+            <TextField fx:id="searchPartText" layoutX="327.0" layoutY="19.0" />
+            <TableView fx:id="partTable" layoutX="15.0" layoutY="64.0" prefHeight="182.0" prefWidth="461.0">
+              <columns>
+                <TableColumn fx:id="partID" prefWidth="115.0" text="Part ID" />
+                <TableColumn fx:id="partName" prefWidth="90.0" text="Part Name" />
+                  <TableColumn fx:id="partInventoryLevel" prefWidth="128.0" text="Inventory Level" />
+                  <TableColumn fx:id="partPrice" prefWidth="126.0" text="Price/Cost per Unit" />
+              </columns>
+            </TableView>
+            <Button fx:id="addPartButton" layoutX="194.0" layoutY="265.0" mnemonicParsing="false" onMouseClicked="#addPartHandler" text="Add" />
+            <Button fx:id="modifyPartButton" layoutX="278.0" layoutY="265.0" mnemonicParsing="false" onMouseClicked="#modifyPartHandler" text="Modify" />
+            <Button fx:id="deletePartButton" layoutX="376.0" layoutY="265.0" mnemonicParsing="false" onMouseClicked="#deletePartHandler" text="Delete" />
+         </children>
+      </AnchorPane>
+      <Label layoutX="27.0" layoutY="25.0" text="Inventory management system">
+         <font>
+            <Font size="21.0" />
+         </font>
+      </Label>
+      <AnchorPane layoutX="541.0" layoutY="74.0" prefHeight="317.0" prefWidth="496.0" style="-fx-border-color: black; -fx-border-radius: 10;">
+         <children>
+            <Label layoutX="14.0" layoutY="14.0" text="Products">
+               <font>
+                  <Font size="21.0" />
+               </font>
+            </Label>
+            <Button fx:id="searchProductButton" layoutX="252.0" layoutY="19.0" mnemonicParsing="false" onMouseClicked="#searchProductHandler" text="Search" />
+            <TextField fx:id="searchProductText" layoutX="327.0" layoutY="19.0" />
+            <TableView fx:id="productTable" layoutX="15.0" layoutY="64.0" prefHeight="182.0" prefWidth="461.0">
+               <columns>
+                  <TableColumn fx:id="productID" prefWidth="115.0" text="Product ID" />
+                  <TableColumn fx:id="productName" prefWidth="90.0" text="Product Name" />
+                  <TableColumn fx:id="productInventoryLevel" prefWidth="128.0" text="Inventory Level" />
+                  <TableColumn fx:id="productPrice" prefWidth="126.0" text="Price/Cost per Unit" />
+               </columns>
+            </TableView>
+            <Button fx:id="addProductButton" layoutX="194.0" layoutY="265.0" mnemonicParsing="false" onMouseClicked="#addProductHandler" text="Add" />
+            <Button fx:id="modifyProductButton" layoutX="278.0" layoutY="265.0" mnemonicParsing="false" onMouseClicked="#modifyProductHandler" text="Modify" />
+            <Button fx:id="deleteProductButton" layoutX="376.0" layoutY="265.0" mnemonicParsing="false" onMouseClicked="#deleteProductHandler" text="Delete" />
+         </children>
+      </AnchorPane>
+      <Button fx:id="exitButton" layoutX="941.0" layoutY="405.0" mnemonicParsing="false" onMouseClicked="#exitHandler" text="Exit" />
+   </children>
+</AnchorPane>
