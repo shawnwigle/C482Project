@@ -161,16 +161,32 @@ public class MainScreenController {
 
     @FXML
     void modifyProductHandler(MouseEvent event) throws IOException {
-        changeScenes(event, "ModifyProduct.fxml");
-    }
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("ModifyProduct.fxml"));
+            Parent modifyProductParent = loader.load();
+            Scene modifyProductScene = new Scene(modifyProductParent);
 
-    @FXML
-    void deleteProductHandler(MouseEvent event) {
+            ModifyProductController controller = loader.getController();
+            controller.populateData(productTable.getSelectionModel().getSelectedItem());
 
-    }
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setScene(modifyProductScene);
+            window.show();
+        } catch (RuntimeException runtimeException) {
+            Alert a = new Alert(Alert.AlertType.NONE);
+            a.setAlertType(Alert.AlertType.ERROR);
+            a.setContentText("You must select a part in order to modify!");
+            a.show();
+        }
 
-    @FXML
-    void searchProductHandler(MouseEvent event) {
+        @FXML
+        void deleteProductHandler (MouseEvent event){
+
+        }
+
+        @FXML
+        void searchProductHandler (MouseEvent event){
 
         String searchItem = searchProductText.getText().toLowerCase();
         ObservableList<Product> searchProducts = FXCollections.observableArrayList();

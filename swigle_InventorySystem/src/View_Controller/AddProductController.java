@@ -4,6 +4,7 @@
 
 package View_Controller;
 
+import Model.InHouse;
 import Model.Product;
 import Model.Part;
 import Model.Inventory;
@@ -26,24 +27,42 @@ import javafx.stage.Stage;
 
 public class AddProductController {
 
-    @FXML private ResourceBundle resources;
-    @FXML private URL location;
-    @FXML private TextField productIdText;
-    @FXML private TextField partNameText;
-    @FXML private TextField partInvText;
-    @FXML private TextField partPriceText;
-    @FXML private TextField partMaxText;
-    @FXML private TextField partMinText;
-    @FXML private Button buttonSave;
-    @FXML private Button buttonCancel;
-    @FXML private TableView<Part> availablePartsTable;
-    @FXML private TableColumn<Part, Integer> availablePartID;
-    @FXML private TableColumn<Part, String> availablePartName;
-    @FXML private TableColumn<Part, Integer> availablePartInventoryLevel;
-    @FXML private TableColumn<Part, Double> availablePartPrice;
-    @FXML private TableView<Part> associatedPartsTable;
-    @FXML private TableColumn<Part, Integer> associatedPartID;
-    @FXML private TableColumn<Part, String> associatedPartName;
+    @FXML
+    private ResourceBundle resources;
+    @FXML
+    private URL location;
+    @FXML
+    private TextField productIdText;
+    @FXML
+    private TextField productNameText;
+    @FXML
+    private TextField productInvText;
+    @FXML
+    private TextField productPriceText;
+    @FXML
+    private TextField productMaxText;
+    @FXML
+    private TextField productMinText;
+    @FXML
+    private Button buttonSave;
+    @FXML
+    private Button buttonCancel;
+    @FXML
+    private TableView<Part> availablePartsTable;
+    @FXML
+    private TableColumn<Part, Integer> availablePartID;
+    @FXML
+    private TableColumn<Part, String> availablePartName;
+    @FXML
+    private TableColumn<Part, Integer> availablePartInventoryLevel;
+    @FXML
+    private TableColumn<Part, Double> availablePartPrice;
+    @FXML
+    private TableView<Part> associatedPartsTable;
+    @FXML
+    private TableColumn<Part, Integer> associatedPartID;
+    @FXML
+    private TableColumn<Part, String> associatedPartName;
     @FXML private TableColumn<Part, Integer> associatedPartInventoryLevel;
     @FXML private TableColumn<Part, Double> associatedPartPrice;
     @FXML private Button deleteProductButton;
@@ -77,7 +96,25 @@ public class AddProductController {
     }
 
     @FXML
-    void saveProductHandler(MouseEvent event) {
+    void saveProductHandler(MouseEvent event) throws IOException {
+        boolean saved = false;
+        String name = productNameText.getText();
+        double price = Double.parseDouble(productPriceText.getText());
+        int stock = Integer.parseInt(productInvText.getText());
+        int min = Integer.parseInt(productMinText.getText());
+        int max = Integer.parseInt(productMaxText.getText());
+
+        Inventory.addProduct(new Product(name, price, stock, min, max));
+        saved = true;
+        if (saved) {
+            Parent mainScreenParent = FXMLLoader.load(getClass().getResource("MainScreen.fxml"));
+            Scene mainScreenScene = new Scene(mainScreenParent);
+
+            //This line gets the Stage information
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setScene(mainScreenScene);
+            window.show();
+        }
 
     }
 
