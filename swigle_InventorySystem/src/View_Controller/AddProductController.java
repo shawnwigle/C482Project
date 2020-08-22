@@ -4,13 +4,11 @@
 
 package View_Controller;
 
-import Model.InHouse;
 import Model.Product;
 import Model.Part;
 import Model.Inventory;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Observable;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
@@ -63,19 +61,25 @@ public class AddProductController {
     private TableColumn<Part, Integer> associatedPartID;
     @FXML
     private TableColumn<Part, String> associatedPartName;
-    @FXML private TableColumn<Part, Integer> associatedPartInventoryLevel;
-    @FXML private TableColumn<Part, Double> associatedPartPrice;
-    @FXML private Button deleteProductButton;
-    @FXML private Button addProductButton;
-    @FXML private Button searchProductButton;
-    @FXML private TextField productSearchText;
-    private ObservableList<Part> selectedParts = FXCollections.observableArrayList();
+    @FXML
+    private TableColumn<Part, Integer> associatedPartInventoryLevel;
+    @FXML
+    private TableColumn<Part, Double> associatedPartPrice;
+    @FXML
+    private Button deleteProductButton;
+    @FXML
+    private Button addProductButton;
+    @FXML
+    private Button searchProductButton;
+    @FXML
+    private TextField productSearchText;
+    private ObservableList<Part> associatedParts = FXCollections.observableArrayList();
 
     @FXML
     void addProductHandler(MouseEvent event) {
-    Part selectedPart = availablePartsTable.getSelectionModel().getSelectedItem();
-    selectedParts.add(selectedPart);
-    associatedPartsTable.setItems(selectedParts);
+        Part selectedPart = availablePartsTable.getSelectionModel().getSelectedItem();
+        associatedParts.add(selectedPart);
+        associatedPartsTable.setItems(associatedParts);
     }
 
     @FXML
@@ -92,7 +96,7 @@ public class AddProductController {
     @FXML
     void deleteProductHandler(MouseEvent event) {
         Part partsToDelete = associatedPartsTable.getSelectionModel().getSelectedItem();
-        selectedParts.remove(partsToDelete);
+        associatedParts.remove(partsToDelete);
     }
 
     @FXML
@@ -103,8 +107,18 @@ public class AddProductController {
         int stock = Integer.parseInt(productInvText.getText());
         int min = Integer.parseInt(productMinText.getText());
         int max = Integer.parseInt(productMaxText.getText());
+        ObservableList<Part> parts = associatedPartsTable.getItems();
 
-        Inventory.addProduct(new Product(name, price, stock, min, max));
+//        Inventory.addProduct(new Product(name, price, stock, min, max, parts));
+        Product newProduct = new Product();
+        newProduct.setName(name);
+        newProduct.setPrice(price);
+        newProduct.setStock(stock);
+        newProduct.setMin(min);
+        newProduct.setMax(max);
+        newProduct.setAssociatedParts(parts);
+        Inventory.addProduct(newProduct);
+
         saved = true;
         if (saved) {
             Parent mainScreenParent = FXMLLoader.load(getClass().getResource("MainScreen.fxml"));

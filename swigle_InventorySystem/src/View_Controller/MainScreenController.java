@@ -168,6 +168,7 @@ public class MainScreenController {
             Scene modifyProductScene = new Scene(modifyProductParent);
 
             ModifyProductController controller = loader.getController();
+            //causing NullPointerException
             controller.populateData(productTable.getSelectionModel().getSelectedItem());
 
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -176,9 +177,11 @@ public class MainScreenController {
         } catch (RuntimeException runtimeException) {
             Alert a = new Alert(Alert.AlertType.NONE);
             a.setAlertType(Alert.AlertType.ERROR);
-            a.setContentText("You must select a part in order to modify!");
+            a.setContentText("You must select a product in order to modify!");
             a.show();
+            System.out.println(runtimeException);
         }
+    }
 
         @FXML
         void deleteProductHandler (MouseEvent event){
@@ -250,8 +253,8 @@ public class MainScreenController {
             Inventory.addPart(new InHouse("test", 33.30, 3, 2, 4, 123));
             Inventory.addPart(new Outsourced("test2", 33.354, 4, 3, 5,
                     "test company"));
-            Inventory.addProduct(new Product("test", 33.30, 3, 2, 4));
-            Inventory.addProduct(new Product("test2", 33.354, 4, 3, 5));
+//            Inventory.addProduct(new Product("test", 33.30, 3, 2, 4));
+//            Inventory.addProduct(new Product("test2", 33.354, 4, 3, 5));
             entered = true;
         } else {
             partTable.refresh();

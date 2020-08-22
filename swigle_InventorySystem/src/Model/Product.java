@@ -3,6 +3,7 @@ package Model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Product {
@@ -14,17 +15,19 @@ public class Product {
     private int stock;
     private int min;
     private int max;
-    private AtomicInteger ID_GENERATOR = new AtomicInteger(0);
+    private static final AtomicInteger ID_GENERATOR = new AtomicInteger(0);
 
     //constructor
 
-    public Product( String name, double price, int stock, int min, int max) {
+    //    public Product( String name, double price, int stock, int min, int max, ObservableList<Part> associatedParts) {
+    public Product() {
         this.id = ID_GENERATOR.getAndIncrement();
         this.name = name;
         this.price = price;
         this.stock = stock;
         this.min = min;
         this.max = max;
+        this.setAssociatedParts(associatedParts);
     }
 
     //getters & setters
@@ -47,7 +50,7 @@ public class Product {
         return max;
     }
 
-    public static ObservableList<Part> getAssociatedParts() {
+    public static ObservableList getAssociatedParts() {
         return associatedParts;
     }
 
@@ -66,17 +69,23 @@ public class Product {
     public void setMin(int min) {
         this.min = min;
     }
+
     public void setMax(int max) {
         this.max = max;
     }
 
     public void setAssociatedParts(ObservableList<Part> associatedParts) {
-        this.associatedParts = associatedParts;
+        Product.associatedParts.addAll(associatedParts);
     }
 
     //other
-    public void addAssociatedPart(Part part){}
-    public boolean deleteAssociatedPart(Part selectedAssociatedPart){return false;}
+    public void addAssociatedPart(Part part) {
+
+    }
+
+    public boolean deleteAssociatedPart(Part selectedAssociatedPart) {
+        return false;
+    }
 
 
 }

@@ -14,18 +14,23 @@
             <children>
                 <AnchorPane layoutX="41.0" layoutY="64.0">
                     <children>
-                        <Label layoutX="47.0" layoutY="55.0" text="ID" />
-                        <Label layoutX="43.0" layoutY="98.0" text="Name" />
-                        <Label layoutX="45.0" layoutY="144.0" text="Inv" />
-                        <Label layoutX="43.0" layoutY="194.0" text="Price" />
-                        <Label layoutX="44.0" layoutY="244.0" text="Max" />
-                        <Label layoutX="199.0" layoutY="243.0" text="Min" />
-                        <TextField fx:id="productIdText" disable="true" editable="false" layoutX="106.0" layoutY="51.0" promptText="Auto Gen - Disabled" />
-                        <TextField fx:id="partNameText" layoutX="106.0" layoutY="94.0" promptText="Product Name" />
-                        <TextField fx:id="partInvText" layoutX="106.0" layoutY="140.0" prefHeight="25.0" prefWidth="64.0" promptText="Inv" />
-                        <TextField fx:id="partPriceText" layoutX="107.0" layoutY="190.0" prefHeight="25.0" prefWidth="64.0" promptText="Price" />
-                        <TextField fx:id="partMaxText" layoutX="107.0" layoutY="240.0" prefHeight="25.0" prefWidth="64.0" promptText="Max" />
-                        <TextField fx:id="partMinText" layoutX="241.0" layoutY="240.0" prefHeight="25.0" prefWidth="70.0" promptText="Min" />
+                        <Label layoutX="47.0" layoutY="55.0" text="ID"/>
+                        <Label layoutX="43.0" layoutY="98.0" text="Name"/>
+                        <Label layoutX="45.0" layoutY="144.0" text="Inv"/>
+                        <Label layoutX="43.0" layoutY="194.0" text="Price"/>
+                        <Label layoutX="44.0" layoutY="244.0" text="Max"/>
+                        <Label layoutX="199.0" layoutY="243.0" text="Min"/>
+                        <TextField fx:id="productIdText" disable="true" editable="false" layoutX="106.0" layoutY="51.0"
+                                   promptText="Auto Gen - Disabled"/>
+                        <TextField fx:id="productNameText" layoutX="106.0" layoutY="94.0" promptText="Product Name"/>
+                        <TextField fx:id="productInvText" layoutX="106.0" layoutY="140.0" prefHeight="25.0"
+                                   prefWidth="64.0" promptText="Inv"/>
+                        <TextField fx:id="productPriceText" layoutX="107.0" layoutY="190.0" prefHeight="25.0"
+                                   prefWidth="64.0" promptText="Price"/>
+                        <TextField fx:id="productMaxText" layoutX="107.0" layoutY="240.0" prefHeight="25.0"
+                                   prefWidth="64.0" promptText="Max"/>
+                        <TextField fx:id="productMinText" layoutX="241.0" layoutY="240.0" prefHeight="25.0"
+                                   prefWidth="70.0" promptText="Min"/>
                     </children>
                 </AnchorPane>
                 <Label layoutX="20.0" layoutY="14.0" text="Modify Product">
@@ -38,19 +43,19 @@
                 <AnchorPane layoutX="420.0" layoutY="50.0" prefHeight="337.0" prefWidth="552.0">
                     <TableView fx:id="allPartsTable" layoutX="24.0" layoutY="21.0" prefHeight="115.0" prefWidth="461.0">
                         <columns>
-                            <TableColumn fx:id="addPartID" prefWidth="115.0" text="Part ID"/>
-                            <TableColumn fx:id="addPartName" prefWidth="90.0" text="Part Name"/>
-                            <TableColumn fx:id="addPartInventoryLevel" prefWidth="128.0" text="Inventory Level"/>
-                            <TableColumn fx:id="addPartPrice" prefWidth="126.0" text="Price/Cost per Unit"/>
+                            <TableColumn fx:id="availablePartID" prefWidth="115.0" text="Part ID"/>
+                            <TableColumn fx:id="availablePartName" prefWidth="90.0" text="Part Name"/>
+                            <TableColumn fx:id="availablePartInventoryLevel" prefWidth="128.0" text="Inventory Level"/>
+                            <TableColumn fx:id="availablePartPrice" prefWidth="126.0" text="Price/Cost per Unit"/>
                         </columns>
                     </TableView>
                     <TableView fx:id="associatedPartsTable" layoutX="24.0" layoutY="179.0" prefHeight="115.0"
                                prefWidth="461.0">
                         <columns>
-                            <TableColumn fx:id="deletePartID" prefWidth="115.0" text="Part ID"/>
-                            <TableColumn fx:id="deletePartName" prefWidth="90.0" text="Part Name"/>
-                            <TableColumn fx:id="deletePartInventoryLevel" prefWidth="128.0" text="Inventory Level"/>
-                            <TableColumn fx:id="deletePartPrice" prefWidth="126.0" text="Price/Cost per Unit"/>
+                            <TableColumn fx:id="associatedPartID" prefWidth="115.0" text="Part ID"/>
+                            <TableColumn fx:id="associatedPartName" prefWidth="90.0" text="Part Name"/>
+                            <TableColumn fx:id="associatedPartInventoryLevel" prefWidth="128.0" text="Inventory Level"/>
+                            <TableColumn fx:id="associatedPartPrice" prefWidth="126.0" text="Price/Cost per Unit"/>
                         </columns>
                     </TableView>
                     <Button fx:id="deleteProductButton" layoutX="420.0" layoutY="304.0" mnemonicParsing="false" onMouseClicked="#deleteProductHandler" text="Delete" />
