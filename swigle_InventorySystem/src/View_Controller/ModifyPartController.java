@@ -1,7 +1,6 @@
 package View_Controller;
 
 import Model.InHouse;
-import Model.Inventory;
 import Model.Outsourced;
 import Model.Part;
 import javafx.fxml.FXML;
@@ -9,7 +8,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
@@ -41,12 +43,8 @@ public class ModifyPartController {
     private Label labelCompanyName;
     @FXML
     private Label labelMachineID;
-    @FXML
-    private Button buttonSave;
-    @FXML
-    private Button buttonCancel;
     private boolean inHouse;
-    private Part part;
+    private Part currentPart;
 
     @FXML
     void inHouseHandler() {
@@ -79,7 +77,7 @@ public class ModifyPartController {
     }
 
     public void populateData(Part part) {
-        this.part = part;
+        this.currentPart = part;
         if (part instanceof InHouse) {
             radioInHouse.setSelected(true);
             radioOutsourced.setDisable(true);
@@ -87,7 +85,7 @@ public class ModifyPartController {
             InHouse inHousePart = (InHouse) part;
             partIdText.setText(Integer.toString(inHousePart.getId()));
             partNameText.setText(inHousePart.getName());
-            partInvText.setText(Integer.toString(inHousePart.getStock()));
+            partInvText.setText(Integer.toString(inHousePart.getInv()));
             partPriceText.setText(Double.toString(inHousePart.getPrice()));
             partMaxText.setText(Integer.toString(inHousePart.getMax()));
             partMinText.setText(Integer.toString(inHousePart.getMin()));
@@ -100,7 +98,7 @@ public class ModifyPartController {
             Outsourced outsourcedPart = (Outsourced) part;
             partIdText.setText(Integer.toString(outsourcedPart.getId()));
             partNameText.setText(outsourcedPart.getName());
-            partInvText.setText(Integer.toString(outsourcedPart.getStock()));
+            partInvText.setText(Integer.toString(outsourcedPart.getInv()));
             partPriceText.setText(Double.toString(outsourcedPart.getPrice()));
             partMaxText.setText(Integer.toString(outsourcedPart.getMax()));
             partMinText.setText(Integer.toString(outsourcedPart.getMin()));
@@ -134,7 +132,7 @@ public class ModifyPartController {
         try {
             String name = partNameText.getText();
             double price = Double.parseDouble(partPriceText.getText());
-            int stock = Integer.parseInt(partInvText.getText());
+            int inv = Integer.parseInt(partInvText.getText());
             int min = Integer.parseInt(partMinText.getText());
             int max = Integer.parseInt(partMaxText.getText());
 
@@ -144,25 +142,25 @@ public class ModifyPartController {
                 // max must be greater than min
                 if (max >= min) {
                     // ensure that Inv is between min and max
-                    if (stock <= max && stock >= min) {
+                    if (inv <= max && inv >= min) {
                         // instantiate data into an object and add to table
-                        if (part instanceof InHouse) {
+                        if (currentPart instanceof InHouse) {
                             int machine = Integer.parseInt(partMachineText.getText());
-                            part.setName(name);
-                            part.setPrice(price);
-                            part.setStock(stock);
-                            part.setMin(min);
-                            part.setMax(max);
-                            ((InHouse) part).setMachineId(machine);
+                            currentPart.setName(name);
+                            currentPart.setPrice(price);
+                            currentPart.setInv(inv);
+                            currentPart.setMin(min);
+                            currentPart.setMax(max);
+                            ((InHouse) currentPart).setMachineId(machine);
 
                         } else {
                             String company = partCompanyText.getText();
-                            part.setName(name);
-                            part.setPrice(price);
-                            part.setStock(stock);
-                            part.setMin(min);
-                            part.setMax(max);
-                            ((Outsourced) part).setCompanyName(company);
+                            currentPart.setName(name);
+                            currentPart.setPrice(price);
+                            currentPart.setInv(inv);
+                            currentPart.setMin(min);
+                            currentPart.setMax(max);
+                            ((Outsourced) currentPart).setCompanyName(company);
 
                         }
                         saved = true;

@@ -14,43 +14,44 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 
 public class MainScreenController {
 
     static boolean entered;
-    @FXML private ResourceBundle resources;
-    @FXML private URL location;
-    @FXML private Button searchPartButton; // Value injected by FXMLLoader
-    @FXML private TextField searchPartText; // Value injected by FXMLLoader
-    @FXML private TableView<Part> partTable; // Value injected by FXMLLoader
-    @FXML private TableColumn<Part, Integer> partID; // Value injected by FXMLLoader
-    @FXML private TableColumn<Part, String> partName; // Value injected by FXMLLoader
-    @FXML private TableColumn<Part, Integer> partInventoryLevel; // Value injected by FXMLLoader
-    @FXML private TableColumn<Part, Double> partPrice; // Value injected by FXMLLoader
-    @FXML private Button addPartButton; // Value injected by FXMLLoader
-    @FXML private Button modifyPartButton; // Value injected by FXMLLoader
-    @FXML private Button deletePartButton; // Value injected by FXMLLoader
-    @FXML private Button searchProductButton; // Value injected by FXMLLoader
-    @FXML private TextField searchProductText; // Value injected by FXMLLoader
-    @FXML private TableView<Product> productTable; // Value injected by FXMLLoader
-    @FXML private TableColumn<Product, Integer> productID; // Value injected by FXMLLoader
-    @FXML private TableColumn<Product, String> productName; // Value injected by FXMLLoader
+    //    @FXML private ResourceBundle resources;
+//    @FXML private URL location;
+    @FXML
+    private Button searchPartButton; // Value injected by FXMLLoader
+    @FXML
+    private TextField searchPartText; // Value injected by FXMLLoader
+    @FXML
+    private TableView<Part> partTable; // Value injected by FXMLLoader
+    @FXML
+    private TableColumn<Part, Integer> partID; // Value injected by FXMLLoader
+    @FXML
+    private TableColumn<Part, String> partName; // Value injected by FXMLLoader
+    @FXML
+    private TableColumn<Part, Integer> partInventoryLevel; // Value injected by FXMLLoader
+    @FXML
+    private TableColumn<Part, Double> partPrice; // Value injected by FXMLLoader
+    @FXML
+    private Button searchProductButton; // Value injected by FXMLLoader
+    @FXML
+    private TextField searchProductText; // Value injected by FXMLLoader
+    @FXML
+    private TableView<Product> productTable; // Value injected by FXMLLoader
+    @FXML
+    private TableColumn<Product, Integer> productID; // Value injected by FXMLLoader
+    @FXML
+    private TableColumn<Product, String> productName; // Value injected by FXMLLoader
     @FXML private TableColumn<Product, Integer> productInventoryLevel; // Value injected by FXMLLoader
     @FXML private TableColumn<Product, Double> productPrice; // Value injected by FXMLLoader
-    @FXML private Button addProductButton; // Value injected by FXMLLoader
-    @FXML private Button modifyProductButton; // Value injected by FXMLLoader
-    @FXML private Button deleteProductButton; // Value injected by FXMLLoader
     @FXML private Button exitButton; // Value injected by FXMLLoader
 
     public void changeScenes(MouseEvent event, String scene) throws IOException {
-        // Load in the add part fxml document and instantiate the scene object
         Parent addPartParent = FXMLLoader.load(getClass().getResource(scene));
         Scene addPartScene = new Scene(addPartParent);
-
-        //This line gets the Stage information
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(addPartScene);
         window.show();
@@ -119,8 +120,7 @@ public class MainScreenController {
             else if (String.valueOf(p.getPrice()).contains(searchItem)) {
                 found = true;
                 searchParts.add(p);
-            }
-            else if (String.valueOf(p.getStock()).contains(searchItem)) {
+            } else if (String.valueOf(p.getInv()).contains(searchItem)) {
                 found = true;
                 searchParts.add(p);
             }
@@ -206,8 +206,7 @@ public class MainScreenController {
             else if (String.valueOf(p.getPrice()).contains(searchItem)) {
                 found = true;
                 searchProducts.add(p);
-            }
-            else if (String.valueOf(p.getStock()).contains(searchItem)) {
+            } else if (String.valueOf(p.getInv()).contains(searchItem)) {
                 found = true;
                 searchProducts.add(p);
             }
@@ -270,7 +269,7 @@ public class MainScreenController {
         productTable.setItems(Inventory.getAllProducts());
         productID.setCellValueFactory(new PropertyValueFactory<>("id"));
         productName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        productInventoryLevel.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        productInventoryLevel.setCellValueFactory(new PropertyValueFactory<>("inv"));
         productPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
 
 

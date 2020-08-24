@@ -1,16 +1,8 @@
-/**
- * Sample Skeleton for 'AddProduct.fxml' Controller Class
- */
-
 package View_Controller;
 
-import Model.Product;
-import Model.Part;
 import Model.Inventory;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-
+import Model.Part;
+import Model.Product;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -23,8 +15,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+
 public class AddProductController {
 
+    private final ObservableList<Part> currentParts = FXCollections.observableArrayList();
     @FXML
     private ResourceBundle resources;
     @FXML
@@ -42,10 +39,6 @@ public class AddProductController {
     @FXML
     private TextField productMinText;
     @FXML
-    private Button buttonSave;
-    @FXML
-    private Button buttonCancel;
-    @FXML
     private TableView<Part> availablePartsTable;
     @FXML
     private TableColumn<Part, Integer> availablePartID;
@@ -56,7 +49,7 @@ public class AddProductController {
     @FXML
     private TableColumn<Part, Double> availablePartPrice;
     @FXML
-    private TableView<Part> associatedPartsTable;
+    private TableView<Part> currentPartsTable;
     @FXML
     private TableColumn<Part, Integer> associatedPartID;
     @FXML
@@ -66,20 +59,15 @@ public class AddProductController {
     @FXML
     private TableColumn<Part, Double> associatedPartPrice;
     @FXML
-    private Button deleteProductButton;
-    @FXML
-    private Button addProductButton;
-    @FXML
     private Button searchProductButton;
     @FXML
     private TextField productSearchText;
-    private ObservableList<Part> associatedParts = FXCollections.observableArrayList();
 
     @FXML
     void addProductHandler(MouseEvent event) {
         Part selectedPart = availablePartsTable.getSelectionModel().getSelectedItem();
-        associatedParts.add(selectedPart);
-        associatedPartsTable.setItems(associatedParts);
+        currentParts.add(selectedPart);
+        currentPartsTable.setItems(currentParts);
     }
 
     @FXML
@@ -95,28 +83,28 @@ public class AddProductController {
 
     @FXML
     void deleteProductHandler(MouseEvent event) {
-        Part partsToDelete = associatedPartsTable.getSelectionModel().getSelectedItem();
-        associatedParts.remove(partsToDelete);
+        Part partsToDelete = currentPartsTable.getSelectionModel().getSelectedItem();
+        currentParts.remove(partsToDelete);
     }
 
     @FXML
     void saveProductHandler(MouseEvent event) throws IOException {
-        boolean saved = false;
+        boolean saved;
         String name = productNameText.getText();
         double price = Double.parseDouble(productPriceText.getText());
         int stock = Integer.parseInt(productInvText.getText());
         int min = Integer.parseInt(productMinText.getText());
         int max = Integer.parseInt(productMaxText.getText());
-        ObservableList<Part> parts = associatedPartsTable.getItems();
+        ObservableList<Part> parts = currentPartsTable.getItems();
 
 //        Inventory.addProduct(new Product(name, price, stock, min, max, parts));
         Product newProduct = new Product();
         newProduct.setName(name);
         newProduct.setPrice(price);
-        newProduct.setStock(stock);
+        newProduct.setInv(stock);
         newProduct.setMin(min);
         newProduct.setMax(max);
-        newProduct.setAssociatedParts(parts);
+        Product.setAssociatedParts(parts);
         Inventory.addProduct(newProduct);
 
         saved = true;
@@ -149,8 +137,7 @@ public class AddProductController {
             else if (String.valueOf(p.getPrice()).contains(searchItem)) {
                 found = true;
                 searchParts.add(p);
-            }
-            else if (String.valueOf(p.getStock()).contains(searchItem)) {
+            } else if (String.valueOf(p.getInv()).contains(searchItem)) {
                 found = true;
                 searchParts.add(p);
             }
@@ -191,7 +178,7 @@ public class AddProductController {
         availablePartInventoryLevel.setCellValueFactory(new PropertyValueFactory<>("stock"));
         availablePartPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
 
-        associatedPartsTable.setItems(Product.getAssociatedParts());
+        currentPartsTable.setItems(currentParts);
         associatedPartID.setCellValueFactory(new PropertyValueFactory<>("id"));
         associatedPartName.setCellValueFactory(new PropertyValueFactory<>("name"));
         associatedPartInventoryLevel.setCellValueFactory(new PropertyValueFactory<>("stock"));

@@ -3,59 +3,69 @@ package Model;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class Part {
-    // Fields
-    private int id;
+    private static final AtomicInteger ID_GENERATOR = new AtomicInteger(0);
     private String name;
     private double price;
-    private int stock;
+    // Fields
+    private final int id;
     private int min;
     private int max;
-    private static AtomicInteger ID_GENERATOR = new AtomicInteger(0);
+    private int inv;
 
     // Constructor
-    public Part(String name, double price, int stock, int min, int max) {
+    public Part(String name, double price, int inv, int min, int max) {
         this.id = ID_GENERATOR.getAndIncrement();
         this.name = name;
         this.price = price;
-        this.stock = stock;
+        this.inv = inv;
         this.min = min;
         this.max = max;
     }
 
     // Getters & Setters
     public int getId() {
-         return id;
-     }
-    public String getName() {
-         return name;
-     }
-    public double getPrice() {
-         return price;
-     }
-    public int getStock() {
-         return stock;
-     }
-    public int getMin() {
-         return min;
-     }
-    public int getMax() {
-            return max;
-        }
-    public void setId(int id) {
-        this.id = id;
+        return id;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    //    public void setId(int id) {
+//        this.id = id;
+//    }
     public void setName(String name) {
         this.name = name;
     }
+
+    public double getPrice() {
+        return price;
+    }
+
     public void setPrice(double price) {
         this.price = price;
     }
-    public void setStock(int stock) {
-        this.stock = stock;
+
+    public int getInv() {
+        return inv;
     }
+
+    public void setInv(int inv) {
+        this.inv = inv;
+    }
+
+    public int getMin() {
+        return min;
+    }
+
+    public int getMax() {
+        return max;
+    }
+
     public void setMin(int min) {
         this.min = min;
     }
+
     public void setMax(int max) {
         this.max = max;
     }

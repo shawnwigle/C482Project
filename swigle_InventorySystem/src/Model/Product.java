@@ -1,90 +1,104 @@
 package Model;
 
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Product {
     //fields
     private static ObservableList<Part> associatedParts = FXCollections.observableArrayList();
-    private int id;
-    private String name;
-    private double price;
-    private int stock;
-    private int min;
-    private int max;
     private static final AtomicInteger ID_GENERATOR = new AtomicInteger(0);
+    private final int id;
+    private final StringProperty name;
+    private final DoubleProperty price;
+    private final IntegerProperty inv;
+    private final IntegerProperty min;
+    private final IntegerProperty max;
 
     //constructor
-
-    //    public Product( String name, double price, int stock, int min, int max, ObservableList<Part> associatedParts) {
     public Product() {
         this.id = ID_GENERATOR.getAndIncrement();
-        this.name = name;
-        this.price = price;
-        this.stock = stock;
-        this.min = min;
-        this.max = max;
-        this.setAssociatedParts(associatedParts);
+        this.name = new SimpleStringProperty();
+        this.price = new SimpleDoubleProperty();
+        this.inv = new SimpleIntegerProperty();
+        this.min = new SimpleIntegerProperty();
+        this.max = new SimpleIntegerProperty();
+        associatedParts = Product.getAssociatedParts();
+
     }
 
-    //getters & setters
-    public int getId() {
-        return id;
-    }
-    public String getName() {
-        return name;
-    }
-    public double getPrice() {
-        return price;
-    }
-    public int getStock() {
-        return stock;
-    }
-    public int getMin() {
-        return min;
-    }
-    public int getMax() {
-        return max;
-    }
-
-    public static ObservableList getAssociatedParts() {
+    public static ObservableList<Part> getAssociatedParts() {
         return associatedParts;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public static void setAssociatedParts(ObservableList<Part> selectedParts) {
+        Product.associatedParts = selectedParts;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name.get();
+    }
+
     public void setName(String name) {
-        this.name = name;
+        this.name.set(name);
     }
+
+    public StringProperty nameProperty() {
+        return name;
+    }
+
+    public double getPrice() {
+        return price.get();
+    }
+
     public void setPrice(double price) {
-        this.price = price;
+        this.price.set(price);
     }
-    public void setStock(int stock) {
-        this.stock = stock;
+
+    public DoubleProperty priceProperty() {
+        return price;
     }
+
+    public int getInv() {
+        return inv.get();
+    }
+
+    public void setInv(int inv) {
+        this.inv.set(inv);
+    }
+
+    public IntegerProperty invProperty() {
+        return inv;
+    }
+
+    public int getMin() {
+        return min.get();
+    }
+
     public void setMin(int min) {
-        this.min = min;
+        this.min.set(min);
+    }
+
+    public IntegerProperty minProperty() {
+        return min;
+    }
+
+    public int getMax() {
+        return max.get();
     }
 
     public void setMax(int max) {
-        this.max = max;
+        this.max.set(max);
     }
 
-    public void setAssociatedParts(ObservableList<Part> associatedParts) {
-        Product.associatedParts.addAll(associatedParts);
-    }
-
-    //other
-    public void addAssociatedPart(Part part) {
-
-    }
-
-    public boolean deleteAssociatedPart(Part selectedAssociatedPart) {
-        return false;
+    public IntegerProperty maxProperty() {
+        return max;
     }
 
 
