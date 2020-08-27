@@ -1,6 +1,7 @@
 package View_Controller;
 
 import Model.InHouse;
+import Model.Inventory;
 import Model.Outsourced;
 import Model.Part;
 import javafx.fxml.FXML;
@@ -18,7 +19,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class ModifyPartController {
-
     @FXML
     private RadioButton radioInHouse;
     @FXML
@@ -43,8 +43,8 @@ public class ModifyPartController {
     private Label labelCompanyName;
     @FXML
     private Label labelMachineID;
-    private boolean inHouse;
-    private Part currentPart;
+
+    private Part selectedPart;
 
     @FXML
     void inHouseHandler() {
@@ -57,7 +57,6 @@ public class ModifyPartController {
             partMachineText.setOpacity(1);
             partMachineText.setEditable(true);
             partMachineText.setDisable(false);
-            inHouse = true;
         }
     }
 
@@ -72,15 +71,13 @@ public class ModifyPartController {
             partMachineText.setOpacity(0);
             partMachineText.setEditable(false);
             partMachineText.setDisable(true);
-            inHouse = false;
         }
     }
 
     public void populateData(Part part) {
-        this.currentPart = part;
+        this.selectedPart = part;
         if (part instanceof InHouse) {
             radioInHouse.setSelected(true);
-            radioOutsourced.setDisable(true);
             inHouseHandler();
             InHouse inHousePart = (InHouse) part;
             partIdText.setText(Integer.toString(inHousePart.getId()));
@@ -93,7 +90,6 @@ public class ModifyPartController {
 
         } else {
             radioOutsourced.setSelected(true);
-            radioInHouse.setDisable(true);
             outsourcedHandler();
             Outsourced outsourcedPart = (Outsourced) part;
             partIdText.setText(Integer.toString(outsourcedPart.getId()));
@@ -124,64 +120,50 @@ public class ModifyPartController {
     }
 
     @FXML
-    // if you add MouseEvent to parameters it prevents the fxml from seeing the partSaveHandler method
+        // if you add MouseEvent to parameters it prevents the fxml from seeing the partSaveHandler method
     void partSaveHandler(MouseEvent event) throws IOException {
         Alert a = new Alert(Alert.AlertType.NONE);
-
         boolean saved = false;
         try {
+            int id = selectedPart.getId();
             String name = partNameText.getText();
             double price = Double.parseDouble(partPriceText.getText());
             int inv = Integer.parseInt(partInvText.getText());
             int min = Integer.parseInt(partMinText.getText());
             int max = Integer.parseInt(partMaxText.getText());
+            String company = partCompanyText.getText();
+            int machine = Integer.parseInt(partMachineText.getText());
+            boolean inhouse = radioInHouse.isSelected();
+            boolean outsourced = radioOutsourced.isSelected();
 
 
-            // max must be at least one
-            if (max >= 1) {
-                // max must be greater than min
-                if (max >= min) {
-                    // ensure that Inv is between min and max
-                    if (inv <= max && inv >= min) {
-                        // instantiate data into an object and add to table
-                        if (currentPart instanceof InHouse) {
-                            int machine = Integer.parseInt(partMachineText.getText());
-                            currentPart.setName(name);
-                            currentPart.setPrice(price);
-                            currentPart.setInv(inv);
-                            currentPart.setMin(min);
-                            currentPart.setMax(max);
-                            ((InHouse) currentPart).setMachineId(machine);
-
-                        } else {
-                            String company = partCompanyText.getText();
-                            currentPart.setName(name);
-                            currentPart.setPrice(price);
-                            currentPart.setInv(inv);
-                            currentPart.setMin(min);
-                            currentPart.setMax(max);
-                            ((Outsourced) currentPart).setCompanyName(company);
-
-                        }
-                        saved = true;
-                    } else {
-                        a.setAlertType(Alert.AlertType.ERROR);
-                        a.setContentText("Inv must be between max and min.");
-                        a.show();
-                        partInvText.setText("");
-                    }
-                } else {
-                    a.setAlertType(Alert.AlertType.ERROR);
-                    a.setContentText("Max must be greater than min");
-                    a.show();
-                    partMaxText.setText("");
-                    partMinText.setText("");
-                }
+            // max must be greater than min
+            if (max >= min && inhouse) {
+                InHouse modifiedInHousePart = new InHouse(id);
+                modifiedInHousePart.setName(name);
+                modifiedInHousePart.setPrice(price);
+                modifiedInHousePart.setInv(inv);
+                modifiedInHousePart.setMin(min);
+                modifiedInHousePart.setMax(max);
+                modifiedInHousePart.setMachineId(machine);
+                Inventory.updatePart(id, modifiedInHousePart);
+                saved = true;
+            } else if (max >= min && outsourced) {
+                Outsourced modifiedOutsourcedPart = new Outsourced(id);
+                modifiedOutsourcedPart.setName(name);
+                modifiedOutsourcedPart.setPrice(price);
+                modifiedOutsourcedPart.setInv(inv);
+                modifiedOutsourcedPart.setMin(min);
+                modifiedOutsourcedPart.setMax(max);
+                modifiedOutsourcedPart.setCompanyName(company);
+                Inventory.updatePart(id, modifiedOutsourcedPart);
+                saved = true;
             } else {
                 a.setAlertType(Alert.AlertType.ERROR);
-                a.setContentText("Max must be greater than or equal to 1");
+                a.setContentText("Max must be greater than min");
                 a.show();
                 partMaxText.setText("");
+                partMinText.setText("");
             }
             if (saved) {
                 Parent mainScreenParent = FXMLLoader.load(getClass().getResource("MainScreen.fxml"));

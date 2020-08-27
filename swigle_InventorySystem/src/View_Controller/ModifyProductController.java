@@ -195,13 +195,13 @@ public class ModifyProductController {
         allPartsTable.setItems(Inventory.getAllParts());
         availablePartID.setCellValueFactory(new PropertyValueFactory<>("id"));
         availablePartName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        availablePartInventoryLevel.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        availablePartInventoryLevel.setCellValueFactory(new PropertyValueFactory<>("inv"));
         availablePartPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
 
         currentPartsTable.setItems(Product.getAssociatedParts());
         associatedPartID.setCellValueFactory(new PropertyValueFactory<>("id"));
         associatedPartName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        associatedPartInventoryLevel.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        associatedPartInventoryLevel.setCellValueFactory(new PropertyValueFactory<>("inv"));
         associatedPartPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
 
 

@@ -19,7 +19,6 @@ public class AddPartController {
 
     @FXML private RadioButton radioInHouse;
     @FXML private RadioButton radioOutsourced;
-    @FXML private TextField partIdText;
     @FXML private TextField partNameText;
     @FXML private TextField partInvText;
     @FXML private TextField partPriceText;
@@ -29,9 +28,6 @@ public class AddPartController {
     @FXML private TextField partMachineText;
     @FXML private Label labelMachineID;
     @FXML private Label labelCompanyName;
-    @FXML private Button buttonSave;
-    @FXML private Button buttonCancel;
-    private boolean inHouse = true;
 
     /**
      * When this method is called it enables the Machine fields and disables the company fields
@@ -47,7 +43,6 @@ public class AddPartController {
             partMachineText.setOpacity(1);
             partMachineText.setEditable(true);
             partMachineText.setDisable(false);
-            inHouse = true;
         }
     }
 
@@ -65,7 +60,6 @@ public class AddPartController {
             partMachineText.setOpacity(0);
             partMachineText.setEditable(false);
             partMachineText.setDisable(true);
-            inHouse = false;
         }
     }
 
@@ -93,46 +87,47 @@ public class AddPartController {
         try {
             String name = partNameText.getText();
             double price = Double.parseDouble(partPriceText.getText());
-            int stock = Integer.parseInt(partInvText.getText());
+            int inv = Integer.parseInt(partInvText.getText());
             int min = Integer.parseInt(partMinText.getText());
             int max = Integer.parseInt(partMaxText.getText());
 
 
-            // max must be at least one
-            if (max >= 1) {
+
                 // max must be greater than min
-                if (max >= min) {
-                    // ensure that Inv is between min and max
-                    if (stock <= max && stock >= min) {
-                        // instantiate data into an object and add to table
-                        if (inHouse) {
-                            int machine = Integer.parseInt(partMachineText.getText());
-                            Inventory.addPart(new InHouse(name, price, stock, min, max, machine));
-                        } else {
-                            String company = partCompanyText.getText();
-                            Inventory.addPart(new Outsourced(name, price, stock, min, max, company));
-                        }
-                        saved = true;
-                    } else {
-                        a.setAlertType(Alert.AlertType.ERROR);
-                        a.setContentText("Inv must be between max and min.");
-                        a.show();
-                        partInvText.setText("");
-                    }
-                } else {
+                if (max >= min && radioInHouse.isSelected()) {
+                    int machine = Integer.parseInt(partMachineText.getText());
+                    InHouse newInHousePart = new InHouse();
+                    newInHousePart.setName(name);
+                    newInHousePart.setPrice(price);
+                    newInHousePart.setInv(inv);
+                    newInHousePart.setMin(min);
+                    newInHousePart.setMax(max);
+                    newInHousePart.setMachineId(machine);
+                    Inventory.addPart(newInHousePart);
+                    System.out.println("Part: " + newInHousePart.getName() + " was added");
+                    saved = true;
+                } else if (max >= min && radioOutsourced.isSelected()) {
+                    String company = partCompanyText.getText();
+                    Outsourced newOutsourcedPart = new Outsourced();
+                    newOutsourcedPart.setName(name);
+                    newOutsourcedPart.setPrice(price);
+                    newOutsourcedPart.setInv(inv);
+                    newOutsourcedPart.setMin(min);
+                    newOutsourcedPart.setMax(max);
+                    newOutsourcedPart.setCompanyName(company);
+                    Inventory.addPart(newOutsourcedPart);
+                    System.out.println("Part: " + newOutsourcedPart.getName() + " was added");
+                    saved = true;
+                }
+                 else {
                     a.setAlertType(Alert.AlertType.ERROR);
                     a.setContentText("Max must be greater than min");
                     a.show();
                     partMaxText.setText("");
                     partMinText.setText("");
                 }
-            } else {
-                a.setAlertType(Alert.AlertType.ERROR);
-                a.setContentText("Max must be greater than or equal to 1");
-                a.show();
-                partMaxText.setText("");
-            }
-            if (saved == true) {
+
+            if (saved) {
                 Parent mainScreenParent = FXMLLoader.load(getClass().getResource("MainScreen.fxml"));
                 Scene mainScreenScene = new Scene(mainScreenParent);
 

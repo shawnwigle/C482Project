@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 public class InventorySystem extends Application {
     // TODO: clean up code
     // TODO: dehydrate
+    // TODO: document all the methods
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("../View_Controller/MainScreen.fxml"));

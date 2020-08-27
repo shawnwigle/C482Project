@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
+//TODO: ensure product must have a name, price, and inventory level (default 0)
 public class AddProductController {
 
     private final ObservableList<Part> currentParts = FXCollections.observableArrayList();
@@ -85,6 +85,7 @@ public class AddProductController {
     void deleteProductHandler(MouseEvent event) {
         Part partsToDelete = currentPartsTable.getSelectionModel().getSelectedItem();
         currentParts.remove(partsToDelete);
+
     }
 
     @FXML
@@ -106,6 +107,7 @@ public class AddProductController {
         newProduct.setMax(max);
         Product.setAssociatedParts(parts);
         Inventory.addProduct(newProduct);
+        System.out.println("Product: " + newProduct.getName() + " was added");
 
         saved = true;
         if (saved) {
@@ -175,13 +177,13 @@ public class AddProductController {
         availablePartsTable.setItems(Inventory.getAllParts());
         availablePartID.setCellValueFactory(new PropertyValueFactory<>("id"));
         availablePartName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        availablePartInventoryLevel.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        availablePartInventoryLevel.setCellValueFactory(new PropertyValueFactory<>("inv"));
         availablePartPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
 
         currentPartsTable.setItems(currentParts);
         associatedPartID.setCellValueFactory(new PropertyValueFactory<>("id"));
         associatedPartName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        associatedPartInventoryLevel.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        associatedPartInventoryLevel.setCellValueFactory(new PropertyValueFactory<>("inv"));
         associatedPartPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
 
     }

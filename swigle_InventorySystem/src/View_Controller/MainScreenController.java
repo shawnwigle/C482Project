@@ -19,35 +19,22 @@ import java.io.IOException;
 public class MainScreenController {
 
     static boolean entered;
-    //    @FXML private ResourceBundle resources;
-//    @FXML private URL location;
-    @FXML
-    private Button searchPartButton; // Value injected by FXMLLoader
-    @FXML
-    private TextField searchPartText; // Value injected by FXMLLoader
-    @FXML
-    private TableView<Part> partTable; // Value injected by FXMLLoader
-    @FXML
-    private TableColumn<Part, Integer> partID; // Value injected by FXMLLoader
-    @FXML
-    private TableColumn<Part, String> partName; // Value injected by FXMLLoader
-    @FXML
-    private TableColumn<Part, Integer> partInventoryLevel; // Value injected by FXMLLoader
-    @FXML
-    private TableColumn<Part, Double> partPrice; // Value injected by FXMLLoader
-    @FXML
-    private Button searchProductButton; // Value injected by FXMLLoader
-    @FXML
-    private TextField searchProductText; // Value injected by FXMLLoader
-    @FXML
-    private TableView<Product> productTable; // Value injected by FXMLLoader
-    @FXML
-    private TableColumn<Product, Integer> productID; // Value injected by FXMLLoader
-    @FXML
-    private TableColumn<Product, String> productName; // Value injected by FXMLLoader
-    @FXML private TableColumn<Product, Integer> productInventoryLevel; // Value injected by FXMLLoader
-    @FXML private TableColumn<Product, Double> productPrice; // Value injected by FXMLLoader
-    @FXML private Button exitButton; // Value injected by FXMLLoader
+
+    @FXML private Button searchPartButton;
+    @FXML private TextField searchPartText;
+    @FXML private TableView<Part> partTable;
+    @FXML private TableColumn<Part, Integer> partID;
+    @FXML private TableColumn<Part, String> partName;
+    @FXML private TableColumn<Part, Integer> partInventoryLevel;
+    @FXML private TableColumn<Part, Double> partPrice;
+    @FXML private Button searchProductButton;
+    @FXML private TextField searchProductText;
+    @FXML private TableView<Product> productTable;
+    @FXML private TableColumn<Product, Integer> productID;
+    @FXML private TableColumn<Product, String> productName;
+    @FXML private TableColumn<Product, Integer> productInventoryLevel;
+    @FXML private TableColumn<Product, Double> productPrice;
+    @FXML private Button exitButton;
 
     public void changeScenes(MouseEvent event, String scene) throws IOException {
         Parent addPartParent = FXMLLoader.load(getClass().getResource(scene));
@@ -100,7 +87,9 @@ public class MainScreenController {
     @FXML
     void deletePartHandler(MouseEvent event) {
         Part selectedItem = partTable.getSelectionModel().getSelectedItem();
-        partTable.getItems().remove(selectedItem);
+        if (Inventory.deletePart(selectedItem)) {
+            System.out.println("Part: " + selectedItem.getName() + " was deleted");
+        }
     }
 
     @FXML
@@ -112,12 +101,10 @@ public class MainScreenController {
             if (p.getName() != null && p.getName().toLowerCase().contains(searchItem)) {
                 found = true;
                 searchParts.add(p);
-            }
-            else if (String.valueOf(p.getId()).contains(searchItem)) {
+            } else if (String.valueOf(p.getId()).contains(searchItem)) {
                 found = true;
                 searchParts.add(p);
-            }
-            else if (String.valueOf(p.getPrice()).contains(searchItem)) {
+            } else if (String.valueOf(p.getPrice()).contains(searchItem)) {
                 found = true;
                 searchParts.add(p);
             } else if (String.valueOf(p.getInv()).contains(searchItem)) {
@@ -168,7 +155,6 @@ public class MainScreenController {
             Scene modifyProductScene = new Scene(modifyProductParent);
 
             ModifyProductController controller = loader.getController();
-            //causing NullPointerException
             controller.populateData(productTable.getSelectionModel().getSelectedItem());
 
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -179,17 +165,20 @@ public class MainScreenController {
             a.setAlertType(Alert.AlertType.ERROR);
             a.setContentText("You must select a product in order to modify!");
             a.show();
-            System.out.println(runtimeException);
         }
     }
 
-        @FXML
-        void deleteProductHandler (MouseEvent event){
-
+    @FXML
+    void deleteProductHandler(MouseEvent event) {
+        Product selectedItem = productTable.getSelectionModel().getSelectedItem();
+        if (Inventory.deleteProduct(selectedItem)) {
+            System.out.println("Product: " + selectedItem.getName() + " was deleted");
         }
 
-        @FXML
-        void searchProductHandler (MouseEvent event){
+    }
+
+    @FXML
+    void searchProductHandler(MouseEvent event) {
 
         String searchItem = searchProductText.getText().toLowerCase();
         ObservableList<Product> searchProducts = FXCollections.observableArrayList();
@@ -198,12 +187,10 @@ public class MainScreenController {
             if (p.getName() != null && p.getName().toLowerCase().contains(searchItem)) {
                 found = true;
                 searchProducts.add(p);
-            }
-            else if (String.valueOf(p.getId()).contains(searchItem)) {
+            } else if (String.valueOf(p.getId()).contains(searchItem)) {
                 found = true;
                 searchProducts.add(p);
-            }
-            else if (String.valueOf(p.getPrice()).contains(searchItem)) {
+            } else if (String.valueOf(p.getPrice()).contains(searchItem)) {
                 found = true;
                 searchProducts.add(p);
             } else if (String.valueOf(p.getInv()).contains(searchItem)) {
@@ -233,7 +220,7 @@ public class MainScreenController {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Search Information");
             alert.setHeaderText("Error!");
-            alert.setContentText("Part not found! :-(");
+            alert.setContentText("Product not found! :-(");
             alert.showAndWait();
         }
     }
@@ -249,11 +236,27 @@ public class MainScreenController {
     void initialize() {
         // set up the columns
         if (!entered) {
-            Inventory.addPart(new InHouse("test", 33.30, 3, 2, 4, 123));
-            Inventory.addPart(new Outsourced("test2", 33.354, 4, 3, 5,
-                    "test company"));
-//            Inventory.addProduct(new Product("test", 33.30, 3, 2, 4));
-//            Inventory.addProduct(new Product("test2", 33.354, 4, 3, 5));
+            // In House part test
+            InHouse inHouse1 = new InHouse();
+            inHouse1.setName("test_inhouse");
+            inHouse1.setPrice(22.99);
+            inHouse1.setInv(8);
+            inHouse1.setMax(12);
+            inHouse1.setMin(1);
+            inHouse1.setMachineId(123);
+            Inventory.addPart(inHouse1);
+            System.out.println("Part: " + inHouse1.getName() + " was added");
+
+            // Outsourced part test
+            Outsourced outsourced1 = new Outsourced();
+            outsourced1.setName("test_outsourced");
+            outsourced1.setPrice(35.47);
+            outsourced1.setInv(4);
+            outsourced1.setMax(12);
+            outsourced1.setMin(1);
+            outsourced1.setCompanyName("company");
+            Inventory.addPart(outsourced1);
+            System.out.println("Part: " + outsourced1.getName() + " was added");
             entered = true;
         } else {
             partTable.refresh();
@@ -263,7 +266,7 @@ public class MainScreenController {
         partTable.setItems(Inventory.getAllParts());
         partID.setCellValueFactory(new PropertyValueFactory<>("id"));
         partName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        partInventoryLevel.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        partInventoryLevel.setCellValueFactory(new PropertyValueFactory<>("inv"));
         partPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
 
         productTable.setItems(Inventory.getAllProducts());
