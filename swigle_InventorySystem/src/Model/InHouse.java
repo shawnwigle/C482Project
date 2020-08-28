@@ -7,7 +7,7 @@ public class InHouse extends Part {
     // Field
     private final IntegerProperty machineId;
 
-    // Constructor
+    // Constructors
     public InHouse() {
         super();
         this.machineId = new SimpleIntegerProperty();

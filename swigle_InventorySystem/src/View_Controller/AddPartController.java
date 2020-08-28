@@ -12,8 +12,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-
 import java.io.IOException;
+import java.util.Optional;
 
 public class AddPartController {
 
@@ -29,12 +29,9 @@ public class AddPartController {
     @FXML private Label labelMachineID;
     @FXML private Label labelCompanyName;
 
-    /**
-     * When this method is called it enables the Machine fields and disables the company fields
-     */
     @FXML
     void inHouseHandler(ActionEvent event) {
-        if (radioInHouse.isSelected() == true) {
+        if (radioInHouse.isSelected()) {
             labelCompanyName.setOpacity(0);
             partCompanyText.setOpacity(0);
             partCompanyText.setEditable(false);
@@ -46,12 +43,9 @@ public class AddPartController {
         }
     }
 
-    /**
-     * When this method is called it enables the company fields and disables the machine fields
-     */
     @FXML
     void outsourcedHandler(ActionEvent event) {
-        if (radioOutsourced.isSelected() == true) {
+        if (radioOutsourced.isSelected()) {
             labelCompanyName.setOpacity(1);
             partCompanyText.setOpacity(1);
             partCompanyText.setEditable(true);
@@ -63,23 +57,26 @@ public class AddPartController {
         }
     }
 
-    /**
-     * When this method is called it will cancel the window and go back to the main screen
-     */
     @FXML
     void partCancelHandler(MouseEvent event) throws IOException {
-        Parent mainScreenParent = FXMLLoader.load(getClass().getResource("MainScreen.fxml"));
-        Scene mainScreenScene = new Scene(mainScreenParent);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Part Creation");
+        alert.setHeaderText("You are about to cancel the creation of your new Part!");
+        alert.setContentText("Are you sure you want to do this?");
+        Optional<ButtonType> result = alert.showAndWait();
 
-        //This line gets the Stage information
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(mainScreenScene);
-        window.show();
+        if (result.isPresent() && result.get() == ButtonType.OK){
+            System.out.println("Part creation cancelled");
+            Parent mainScreenParent = FXMLLoader.load(getClass().getResource("MainScreen.fxml"));
+            Scene mainScreenScene = new Scene(mainScreenParent);
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setScene(mainScreenScene);
+            window.show();
+        } else {
+            System.out.println("Part creation will continue");
+        }
     }
 
-    /**
-     * When this method is called it will check the form for errors and save it when all errors are corrected
-     */
     @FXML
     void partSaveHandler(MouseEvent event) throws IOException {
         Alert a = new Alert(Alert.AlertType.NONE);
@@ -90,8 +87,6 @@ public class AddPartController {
             int inv = Integer.parseInt(partInvText.getText());
             int min = Integer.parseInt(partMinText.getText());
             int max = Integer.parseInt(partMaxText.getText());
-
-
 
                 // max must be greater than min
                 if (max >= min && radioInHouse.isSelected()) {
@@ -130,8 +125,6 @@ public class AddPartController {
             if (saved) {
                 Parent mainScreenParent = FXMLLoader.load(getClass().getResource("MainScreen.fxml"));
                 Scene mainScreenScene = new Scene(mainScreenParent);
-
-                //This line gets the Stage information
                 Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 window.setScene(mainScreenScene);
                 window.show();

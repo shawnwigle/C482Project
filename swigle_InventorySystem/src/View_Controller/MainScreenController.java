@@ -14,6 +14,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Optional;
 
 
 public class MainScreenController {
@@ -45,23 +46,12 @@ public class MainScreenController {
     }
 
 //    Parts Section
-
-    /**
-     * When this method id called, it will change scenes to the "AddPart" scene
-     *
-     * @param event
-     */
     @FXML
     void addPartHandler(MouseEvent event) throws IOException {
         changeScenes(event, "AddPart.fxml");
 
     }
 
-    /**
-     * When this method id called, it will change scenes to the "ModifyPart" scene
-     *
-     * @param event
-     */
     @FXML
     void modifyPartHandler(MouseEvent event) throws IOException {
         try {
@@ -84,11 +74,22 @@ public class MainScreenController {
         }
     }
 
+
     @FXML
     void deletePartHandler(MouseEvent event) {
         Part selectedItem = partTable.getSelectionModel().getSelectedItem();
-        if (Inventory.deletePart(selectedItem)) {
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Part Deletion");
+        alert.setHeaderText("You are about to delete the Part: " + selectedItem.getName());
+        alert.setContentText("Are you sure you want to do this?");
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK){
+            Inventory.deletePart(selectedItem);
             System.out.println("Part: " + selectedItem.getName() + " was deleted");
+        } else {
+            System.out.println("Deletion of part: " + selectedItem.getName() + " was cancelled.");
         }
     }
 
@@ -171,15 +172,23 @@ public class MainScreenController {
     @FXML
     void deleteProductHandler(MouseEvent event) {
         Product selectedItem = productTable.getSelectionModel().getSelectedItem();
-        if (Inventory.deleteProduct(selectedItem)) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Part Deletion");
+        alert.setHeaderText("You are about to delete the Product: " + selectedItem.getName());
+        alert.setContentText("Are you sure you want to do this?");
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK){
+            Inventory.deleteProduct(selectedItem);
             System.out.println("Product: " + selectedItem.getName() + " was deleted");
+        } else {
+            System.out.println("Deletion of Product: " + selectedItem.getName() + " was cancelled.");
         }
 
     }
 
     @FXML
     void searchProductHandler(MouseEvent event) {
-
         String searchItem = searchProductText.getText().toLowerCase();
         ObservableList<Product> searchProducts = FXCollections.observableArrayList();
         boolean found = false;
@@ -225,11 +234,21 @@ public class MainScreenController {
         }
     }
 
-    //    Exit Button
     @FXML
     void exitHandler(MouseEvent event) {
-        Stage window = (Stage) exitButton.getScene().getWindow();
-        window.close();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Program exit");
+        alert.setHeaderText("You are about to exit the program");
+        alert.setContentText("Is this really what you want to do?");
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK){
+            Stage window = (Stage) exitButton.getScene().getWindow();
+            window.close();
+        } else {
+            System.out.println("Program exit was cancelled!");
+        }
+
     }
 
     @FXML
@@ -257,10 +276,20 @@ public class MainScreenController {
             outsourced1.setCompanyName("company");
             Inventory.addPart(outsourced1);
             System.out.println("Part: " + outsourced1.getName() + " was added");
+
+            // Product test
+            Product test = new Product();
+            test.setName("test_product");
+            test.setInv(2);
+            test.setMax(3);
+            test.setMin(1);
+            test.setPrice(35.35);
+            Inventory.addProduct(test);
+            System.out.println("Product: " + test.getName() + " was added");
+
             entered = true;
         } else {
             partTable.refresh();
-
         }
 
         partTable.setItems(Inventory.getAllParts());

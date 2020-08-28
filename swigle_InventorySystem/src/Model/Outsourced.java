@@ -7,7 +7,7 @@ public class Outsourced extends Part{
     // Field
     private final StringProperty companyName;
 
-    // Constructor
+    // Constructors
     public Outsourced() {
         super();
         this.companyName = new SimpleStringProperty();

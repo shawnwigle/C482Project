@@ -54,7 +54,7 @@
                 </columns>
             </TableView>
             <Button fx:id="deleteProductButton" layoutX="420.0" layoutY="304.0" mnemonicParsing="false"
-                    onMouseClicked="#deleteProductHandler" text="Delete"/>
+                    onMouseClicked="#deleteAssociatedPartHandler" text="Delete"/>
             <Button fx:id="addProductButton" layoutX="420.0" layoutY="144.0" mnemonicParsing="false"
                     onMouseClicked="#addProductHandler" text="Add"/>
         </AnchorPane>

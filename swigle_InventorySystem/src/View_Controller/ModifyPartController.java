@@ -9,41 +9,25 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-
 import java.io.IOException;
+import java.util.Optional;
 
 public class ModifyPartController {
-    @FXML
-    private RadioButton radioInHouse;
-    @FXML
-    private RadioButton radioOutsourced;
-    @FXML
-    private TextField partIdText;
-    @FXML
-    private TextField partNameText;
-    @FXML
-    private TextField partInvText;
-    @FXML
-    private TextField partPriceText;
-    @FXML
-    private TextField partMaxText;
-    @FXML
-    private TextField partMinText;
-    @FXML
-    private TextField partCompanyText;
-    @FXML
-    private TextField partMachineText;
-    @FXML
-    private Label labelCompanyName;
-    @FXML
-    private Label labelMachineID;
-
+    @FXML private RadioButton radioInHouse;
+    @FXML private RadioButton radioOutsourced;
+    @FXML private TextField partIdText;
+    @FXML private TextField partNameText;
+    @FXML private TextField partInvText;
+    @FXML private TextField partPriceText;
+    @FXML private TextField partMaxText;
+    @FXML private TextField partMinText;
+    @FXML private TextField partCompanyText;
+    @FXML private TextField partMachineText;
+    @FXML private Label labelCompanyName;
+    @FXML private Label labelMachineID;
     private Part selectedPart;
 
     @FXML
@@ -102,25 +86,29 @@ public class ModifyPartController {
         }
     }
 
-    /**
-     * When this method is called it will cancel the window and go back to the main screen
-     *
-     * @param event
-     */
     @FXML
     void partCancelHandler(MouseEvent event) throws IOException {
-        Parent mainScreenParent = FXMLLoader.load(getClass().getResource("MainScreen.fxml"));
-        Scene mainScreenScene = new Scene(mainScreenParent);
 
-        //This line gets the Stage information
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(mainScreenScene);
-        window.show();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Part Modification");
+        alert.setHeaderText("You are about to cancel your modifications! \nAll changes will be lost!!!");
+        alert.setContentText("Are you sure you want to do this?");
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK){
+            System.out.println("Part modification was cancelled");
+            Parent mainScreenParent = FXMLLoader.load(getClass().getResource("MainScreen.fxml"));
+            Scene mainScreenScene = new Scene(mainScreenParent);
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setScene(mainScreenScene);
+            window.show();
+        } else {
+            System.out.println("Part modification will continue");
+        }
 
     }
 
     @FXML
-        // if you add MouseEvent to parameters it prevents the fxml from seeing the partSaveHandler method
     void partSaveHandler(MouseEvent event) throws IOException {
         Alert a = new Alert(Alert.AlertType.NONE);
         boolean saved = false;
@@ -135,7 +123,6 @@ public class ModifyPartController {
             int machine = Integer.parseInt(partMachineText.getText());
             boolean inhouse = radioInHouse.isSelected();
             boolean outsourced = radioOutsourced.isSelected();
-
 
             // max must be greater than min
             if (max >= min && inhouse) {
@@ -168,8 +155,6 @@ public class ModifyPartController {
             if (saved) {
                 Parent mainScreenParent = FXMLLoader.load(getClass().getResource("MainScreen.fxml"));
                 Scene mainScreenScene = new Scene(mainScreenParent);
-
-                //This line gets the Stage information
                 Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 window.setScene(mainScreenScene);
                 window.show();
