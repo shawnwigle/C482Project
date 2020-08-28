@@ -13,8 +13,6 @@ import javafx.stage.WindowEvent;
 import java.util.Optional;
 
 public class InventorySystem extends Application {
-    // TODO: clean up code
-    // TODO: document all the methods
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("../View_Controller/MainScreen.fxml"));
