@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Product {
     // Fields
-    private static ObservableList<Part> associatedParts = FXCollections.observableArrayList();
+    private ObservableList<Part> associatedParts = FXCollections.observableArrayList();
     private static final AtomicInteger ID_GENERATOR = new AtomicInteger(0);
     private final int id;
     private final StringProperty name;
@@ -24,7 +24,7 @@ public class Product {
         this.inv = new SimpleIntegerProperty();
         this.min = new SimpleIntegerProperty();
         this.max = new SimpleIntegerProperty();
-        associatedParts = Product.getAssociatedParts();
+
     }
     public Product(int id) {
         this.id = id;
@@ -33,15 +33,14 @@ public class Product {
         this.inv = new SimpleIntegerProperty();
         this.min = new SimpleIntegerProperty();
         this.max = new SimpleIntegerProperty();
-        associatedParts = Product.getAssociatedParts();
     }
 
     // Getters & Setters
-    public static ObservableList<Part> getAssociatedParts() {
-        return associatedParts;
+    public ObservableList<Part> getAssociatedParts() {
+        return this.associatedParts;
     }
-    public static void setAssociatedParts(ObservableList<Part> selectedParts) {
-        Product.associatedParts = selectedParts;
+    public void setAssociatedParts(ObservableList<Part> selectedParts) {
+        this.associatedParts = selectedParts;
     }
     public int getId() {
         return id;
@@ -76,5 +75,7 @@ public class Product {
     public void setMax(int max) {
         this.max.set(max);
     }
+
+
 
 }

@@ -17,6 +17,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Optional;
 
+import static Model.Product.*;
+
 public class AddProductController {
 
     @FXML private TextField productNameText;
@@ -101,7 +103,7 @@ public class AddProductController {
             newProduct.setMin(min);
             newProduct.setMax(max);
 
-            Product.setAssociatedParts(parts);
+            newProduct.setAssociatedParts(parts);
             Inventory.addProduct(newProduct);
 
             System.out.println("Product: " + newProduct.getName() + " was added");

@@ -119,8 +119,6 @@ public class ModifyPartController {
             int inv = Integer.parseInt(partInvText.getText());
             int min = Integer.parseInt(partMinText.getText());
             int max = Integer.parseInt(partMaxText.getText());
-            String company = partCompanyText.getText();
-            int machine = Integer.parseInt(partMachineText.getText());
             boolean inhouse = radioInHouse.isSelected();
             boolean outsourced = radioOutsourced.isSelected();
 
@@ -132,6 +130,7 @@ public class ModifyPartController {
                 modifiedInHousePart.setInv(inv);
                 modifiedInHousePart.setMin(min);
                 modifiedInHousePart.setMax(max);
+                int machine = Integer.parseInt(partMachineText.getText());
                 modifiedInHousePart.setMachineId(machine);
                 Inventory.updatePart(id, modifiedInHousePart);
                 saved = true;
@@ -142,6 +141,7 @@ public class ModifyPartController {
                 modifiedOutsourcedPart.setInv(inv);
                 modifiedOutsourcedPart.setMin(min);
                 modifiedOutsourcedPart.setMax(max);
+                String company = partCompanyText.getText();
                 modifiedOutsourcedPart.setCompanyName(company);
                 Inventory.updatePart(id, modifiedOutsourcedPart);
                 saved = true;

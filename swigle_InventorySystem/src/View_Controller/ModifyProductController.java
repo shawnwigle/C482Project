@@ -50,8 +50,8 @@ public class ModifyProductController {
         productPriceText.setText(Double.toString(currentProduct.getPrice()));
         productMaxText.setText(Integer.toString(currentProduct.getMax()));
         productMinText.setText(Integer.toString(currentProduct.getMin()));
-        currentPartsTable.setItems(Product.getAssociatedParts());
-        currentParts = Product.getAssociatedParts();
+        currentPartsTable.setItems(product.getAssociatedParts());
+        currentParts = product.getAssociatedParts();
     }
 
     @FXML
@@ -120,7 +120,7 @@ public class ModifyProductController {
             currentProduct.setMin(min);
 
             Inventory.updateProduct(id, currentProduct);
-            Product.setAssociatedParts(parts);
+            currentProduct.setAssociatedParts(parts);
             System.out.println("Product: " + currentProduct.getName() + " was modified.");
         } else{
             a.setContentText("Max must be greater than min!");
@@ -194,7 +194,7 @@ public class ModifyProductController {
         availablePartInventoryLevel.setCellValueFactory(new PropertyValueFactory<>("inv"));
         availablePartPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
 
-        currentPartsTable.setItems(Product.getAssociatedParts());
+        currentPartsTable.setItems(currentParts);
         associatedPartID.setCellValueFactory(new PropertyValueFactory<>("id"));
         associatedPartName.setCellValueFactory(new PropertyValueFactory<>("name"));
         associatedPartInventoryLevel.setCellValueFactory(new PropertyValueFactory<>("inv"));
