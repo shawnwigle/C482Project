@@ -160,6 +160,7 @@ public class ModifyPartController {
                 window.show();
             }
         } catch (Exception e) {
+            e.printStackTrace();
             a.setAlertType(Alert.AlertType.ERROR);
             a.setContentText("Something went wrong. Ensure all fields are filled out properly");
             a.show();

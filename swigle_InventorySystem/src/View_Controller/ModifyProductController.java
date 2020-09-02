@@ -99,7 +99,7 @@ public class ModifyProductController {
         }
     }
 
-    @FXML void saveProductHandler(MouseEvent event) throws IOException {
+    @FXML void saveProductHandler(MouseEvent event) throws IOException, NumberFormatException {
         int id = currentProduct.getId();
         String name = productNameText.getText();
         int inv = Integer.parseInt(productInvText.getText());
@@ -109,32 +109,38 @@ public class ModifyProductController {
         ObservableList<Part> parts = currentPartsTable.getItems();
         boolean saved = false;
         Alert a = new Alert(Alert.AlertType.ERROR);
+        try {
+            if (max >= min) {
+                saved = true;
 
-        if (max >= min) {
-            saved = true;
+                currentProduct.setName(name);
+                currentProduct.setInv(inv);
+                currentProduct.setPrice(price);
+                currentProduct.setMax(max);
+                currentProduct.setMin(min);
 
-            currentProduct.setName(name);
-            currentProduct.setInv(inv);
-            currentProduct.setPrice(price);
-            currentProduct.setMax(max);
-            currentProduct.setMin(min);
+                Inventory.updateProduct(id, currentProduct);
+                currentProduct.setAssociatedParts(parts);
+                System.out.println("Product: " + currentProduct.getName() + " was modified.");
+            } else {
+                a.setContentText("Max must be greater than min!");
+                a.show();
+                productMaxText.setText("");
+                productMinText.setText("");
+            }
 
-            Inventory.updateProduct(id, currentProduct);
-            currentProduct.setAssociatedParts(parts);
-            System.out.println("Product: " + currentProduct.getName() + " was modified.");
-        } else{
-            a.setContentText("Max must be greater than min!");
+            if (saved) {
+                Parent mainScreenParent = FXMLLoader.load(getClass().getResource("MainScreen.fxml"));
+                Scene mainScreenScene = new Scene(mainScreenParent);
+                Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                window.setScene(mainScreenScene);
+                window.show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            a.setAlertType(Alert.AlertType.ERROR);
+            a.setContentText("Something went wrong. Ensure all fields are filled out properly");
             a.show();
-            productMaxText.setText("");
-            productMinText.setText("");
-        }
-
-        if (saved) {
-            Parent mainScreenParent = FXMLLoader.load(getClass().getResource("MainScreen.fxml"));
-            Scene mainScreenScene = new Scene(mainScreenParent);
-            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            window.setScene(mainScreenScene);
-            window.show();
         }
 
     }
